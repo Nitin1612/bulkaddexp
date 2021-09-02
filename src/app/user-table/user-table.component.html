@@ -1,0 +1,108 @@
+<header>
+  <div>
+    <h1>Bulk Add Expense</h1>
+  </div>
+
+</header>
+<form [formGroup]="userTable">
+  <table class="table table-border" [ngClass]="{'table-dark': mode}">
+    <thead class="text-nowrap">
+      <th>Expense Date*</th>
+      <th>Merchant</th>
+      <th>Category*</th>
+      <th>Amount</th>
+
+      <th>Description</th>
+
+
+
+
+      <th></th>
+    </thead>
+    <tbody>
+      <ng-container formArrayName="tableRows" *ngFor="let group of getFormControls.controls ; let i=index">
+        <tr *ngIf="group.get('isEditable').value" [formGroupName]="i">
+          <td>
+            <mat-form-field>
+              <input matInput matInput [matDatepicker]="picker" formControlName="expensedate">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field>
+              <input matInput type="text" formControlName="merchant">
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field>
+              <mat-select formControlName="category">
+                <mat-option value="Add Travel Expenses">Add Travel Expenses</mat-option>
+                <mat-option value="Automobile Expense">Automobile Expense</mat-option>
+                <mat-option value="Fuel/Mileage Expense">Fuel/Mileage Expense</mat-option>
+                <mat-option value="IT and Internet Expense">IT and Internet Expense</mat-option>
+                <mat-option value="Job Costing">Job Costing</mat-option>
+                <mat-option value="Meals and Entertainment">Meals and Entertainment</mat-option>
+                <mat-option value="Office and Supplies">Office and Supplies</mat-option>
+                <mat-option value="Other Expenses">Other Expenses</mat-option>
+                <mat-option value="Parking">Parking</mat-option>
+                <mat-option value="Subcontractor">Subcontractor</mat-option>
+                <mat-option value="Telephone Expense">Telephone Expense</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+          </td>
+
+          <td>
+            <mat-form-field>
+              <input matInput type="integer" formControlName="amount">
+            </mat-form-field>
+          </td>
+
+          <td>
+            <mat-form-field>
+              <input matInput type="text" formControlName="Description">
+            </mat-form-field>
+          </td>
+          
+
+
+
+
+          <td>
+            <mat-icon class="delete" (click)="deleteRow(i)">delete_forever</mat-icon>
+
+          </td>
+        </tr>
+        <tr *ngIf="!group.get('isEditable').value">
+          <td>
+            {{group.get('expensedate').value}}
+          </td>
+          <td>
+            {{group.get('email').value}}
+          </td>
+          <td>
+            {{group.get('email').value}}
+          </td>
+          <td>
+            {{group.get('bloodGroup').value}}
+          </td>
+          <td>
+            {{group.get('mobNumber').value}}
+          </td>
+          <td>
+            <mat-icon class="edit" (click)="editRow(group)">edit</mat-icon>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+  <div class="action-container">
+    <button mat-raised-button type="submit" (click)="addRow()">Add more Expenses</button>
+    <button mat-raised-button ="userTable.invalid" type="submit" (click)="submitForm()">Save</button>
+  </div>
+</form>
+<div class="output">
+  <p>Form Data: {{userTable.value | json}}</p>
+  <p>Is Valid: {{userTable.valid}}</p>
+</div>
